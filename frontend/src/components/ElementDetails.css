@@ -18,6 +18,11 @@
   color: #2c3e50;
 }
 
+.header-actions {
+  display: flex;
+  gap: 10px;
+}
+
 .details-view {
   background-color: #f8f9fa;
   padding: 1.5rem;

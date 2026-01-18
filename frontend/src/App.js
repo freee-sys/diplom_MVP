@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 import ElementList from './components/ElementList';
-import ElementForm from './components/ElementForm';
 import ElementDetails from './components/ElementDetails';
 import Topology from './components/Topology';
+import ElementEditor from './components/ElementEditor';
 
 function App() {
   const [elements, setElements] = useState([]);
   const [selectedElement, setSelectedElement] = useState(null);
-  const [showForm, setShowForm] = useState(false);
+  const [showEditor, setShowEditor] = useState(false);
   const [editingElement, setEditingElement] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -36,11 +36,13 @@ function App() {
     }
   };
 
-  const handleCreateElement = async (data) => {
+  const handleCreateElement = async (elementData) => {
     try {
-      const response = await axios.post(`${API_URL}/elements`, data);
-      setElements([...elements, response.data]);
-      setShowForm(false);
+      // ElementEditor уже создал элемент с интерфейсами и отправил полный объект
+      // Просто добавляем в список и обновляем
+      setElements([...elements, elementData]);
+      setShowEditor(false);
+      setSelectedElement(elementData);
       setError(null);
     } catch (err) {
       setError('Failed to create element: ' + err.message);
@@ -48,14 +50,13 @@ function App() {
     }
   };
 
-  const handleUpdateElement = async (elementId, data) => {
+  const handleUpdateElement = async (elementData) => {
     try {
-      const response = await axios.put(`${API_URL}/elements/${elementId}`, data);
-      setElements(elements.map(el => el.id === elementId ? response.data : el));
-      if (selectedElement?.id === elementId) {
-        setSelectedElement(response.data);
-      }
+      // ElementEditor уже обновил элемент и интерфейсы и отправил полный объект
+      setElements(elements.map(el => el.id === editingElement.id ? elementData : el));
+      setSelectedElement(elementData);
       setEditingElement(null);
+      setShowEditor(false);
       setError(null);
     } catch (err) {
       setError('Failed to update element: ' + err.message);
@@ -124,18 +125,14 @@ function App() {
                 <h2>Network Elements</h2>
                 <button 
                   className="btn btn-primary"
-                  onClick={() => setShowForm(!showForm)}
+                  onClick={() => {
+                    setEditingElement(null);
+                    setShowEditor(true);
+                  }}
                 >
-                  {showForm ? '✕ Cancel' : '+ New Element'}
+                  + New Element
                 </button>
               </div>
-
-              {showForm && (
-                <ElementForm 
-                  onSubmit={handleCreateElement}
-                  onCancel={() => setShowForm(false)}
-                />
-              )}
 
               {loading ? (
                 <div className="loading">Loading elements...</div>
@@ -145,6 +142,11 @@ function App() {
                   selectedElement={selectedElement}
                   onSelect={handleSelectElement}
                   onDelete={handleDeleteElement}
+                  onEdit={(element) => {
+                    setSelectedElement(element);
+                    setEditingElement(element);
+                    setShowEditor(true);
+                  }}
                 />
               )}
             </div>
@@ -153,11 +155,12 @@ function App() {
               {selectedElement ? (
                 <ElementDetails 
                   element={selectedElement}
-                  onUpdate={handleUpdateElement}
+                  onUpdate={(data) => handleUpdateElement(data)}
                   onDelete={handleDeleteElement}
-                  isEditing={editingElement?.id === selectedElement.id}
-                  onEditToggle={() => setEditingElement(selectedElement)}
-                  onEditCancel={() => setEditingElement(null)}
+                  onEdit={(element) => {
+                    setEditingElement(element);
+                    setShowEditor(true);
+                  }}
                 />
               ) : (
                 <div className="no-selection">
@@ -165,6 +168,25 @@ function App() {
                 </div>
               )}
             </div>
+
+            {/* Element Editor Modal */}
+            {showEditor && (
+              <ElementEditor 
+                element={editingElement}
+                isCreating={!editingElement}
+                onSave={(savedElement) => {
+                  if (editingElement) {
+                    handleUpdateElement(savedElement);
+                  } else {
+                    handleCreateElement(savedElement);
+                  }
+                }}
+                onCancel={() => {
+                  setShowEditor(false);
+                  setEditingElement(null);
+                }}
+              />
+            )}
           </>
         )}
 

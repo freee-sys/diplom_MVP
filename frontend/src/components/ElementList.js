@@ -1,7 +1,7 @@
 import React from 'react';
 import './ElementList.css';
 
-function ElementList({ elements, selectedElement, onSelect, onDelete }) {
+function ElementList({ elements, selectedElement, onSelect, onDelete, onEdit }) {
   return (
     <div className="element-list">
       {elements.length === 0 ? (
@@ -25,16 +25,28 @@ function ElementList({ elements, selectedElement, onSelect, onDelete }) {
                   </span>
                 </div>
               </div>
-              <button
-                className="btn-delete"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onDelete(element.id);
-                }}
-                title="Delete element"
-              >
-                ✕
-              </button>
+              <div className="element-actions">
+                <button
+                  className="btn-edit"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onEdit(element);
+                  }}
+                  title="Edit element and interfaces"
+                >
+                  ✎
+                </button>
+                <button
+                  className="btn-delete"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDelete(element.id);
+                  }}
+                  title="Delete element"
+                >
+                  ✕
+                </button>
+              </div>
             </li>
           ))}
         </ul>

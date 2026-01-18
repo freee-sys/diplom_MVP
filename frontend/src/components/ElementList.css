@@ -78,6 +78,31 @@
   color: #c0392b;
 }
 
+.element-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-edit {
+  background: none;
+  border: none;
+  color: #3498db;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.btn-edit:hover {
+  color: #2980b9;
+}
+
 .empty-state {
   padding: 2rem;
   text-align: center;

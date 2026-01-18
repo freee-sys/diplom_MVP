@@ -118,6 +118,9 @@ def create_interface(element_id):
         'mac_address': data.get('mac_address', ''),
         'status': data.get('status', 'up'),
         'bandwidth': data.get('bandwidth', ''),
+        'level': data.get('level', 'L2'),  # L2, L3, or L2/L3
+        'reverse_interface_id': data.get('reverse_interface_id', None),  # Reference to another interface
+        'reverse_element_id': data.get('reverse_element_id', None),  # Element that contains reverse interface
         'created_at': datetime.now().isoformat()
     }
     
@@ -154,6 +157,12 @@ def update_interface(element_id, interface_id):
         interface['status'] = data['status']
     if 'bandwidth' in data:
         interface['bandwidth'] = data['bandwidth']
+    if 'level' in data:
+        interface['level'] = data['level']  # L2, L3, or L2/L3
+    if 'reverse_interface_id' in data:
+        interface['reverse_interface_id'] = data['reverse_interface_id']
+    if 'reverse_element_id' in data:
+        interface['reverse_element_id'] = data['reverse_element_id']
     
     element['updated_at'] = datetime.now().isoformat()
     virtual_elements[element_id] = element
@@ -180,8 +189,64 @@ def delete_interface(element_id, interface_id):
 
 
 # ============================================================================
-# Health check
+# Connections/Links - Bidirectional references between interfaces
 # ============================================================================
+
+@app.route('/api/connections', methods=['GET'])
+def get_connections():
+    """Get all connections between interfaces"""
+    connections = []
+    
+    for element_id, element in virtual_elements.items():
+        for interface in element.get('interfaces', []):
+            if interface.get('reverse_interface_id') and interface.get('reverse_element_id'):
+                connection = {
+                    'from_element_id': element_id,
+                    'from_interface_id': interface['id'],
+                    'from_interface_name': interface['name'],
+                    'to_element_id': interface.get('reverse_element_id'),
+                    'to_interface_id': interface.get('reverse_interface_id'),
+                    'level': interface.get('level', 'L2')
+                }
+                # Only add if not duplicate (reverse direction already exists)
+                if not any(
+                    c['from_element_id'] == connection['to_element_id'] and
+                    c['to_element_id'] == connection['from_element_id'] and
+                    c['from_interface_id'] == interface.get('reverse_interface_id')
+                    for c in connections
+                ):
+                    connections.append(connection)
+    
+    return jsonify(connections), 200
+
+
+@app.route('/api/available-interfaces', methods=['GET'])
+def get_available_interfaces():
+    """Get all available interfaces for connection (excluding current element)"""
+    element_id = request.args.get('element_id')
+    interface_id = request.args.get('interface_id')  # Current interface to exclude
+    
+    available = []
+    
+    for elem_id, element in virtual_elements.items():
+        # Skip current element
+        if elem_id == element_id:
+            continue
+            
+        for interface in element.get('interfaces', []):
+            # Skip if already has a reverse connection
+            if interface.get('reverse_interface_id'):
+                continue
+                
+            available.append({
+                'element_id': elem_id,
+                'element_name': element['name'],
+                'interface_id': interface['id'],
+                'interface_name': interface['name'],
+                'type': interface.get('type', 'Ethernet')
+            })
+    
+    return jsonify(available), 200
 
 @app.route('/api/health', methods=['GET'])
 def health():

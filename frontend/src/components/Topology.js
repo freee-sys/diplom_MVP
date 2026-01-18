@@ -1,10 +1,34 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import axios from 'axios';
 import ContextMenu from './ContextMenu';
 import '../styles/Topology.css';
 
 const Topology = ({ elements, onEdit, onDelete, selectedElement }) => {
   const [contextMenu, setContextMenu] = useState(null);
   const [hoveredElement, setHoveredElement] = useState(null);
+  const [connections, setConnections] = useState([]);
+  const [filterLevel, setFilterLevel] = useState('all'); // all, L2, L3, L2/L3
+
+  const API_URL = 'http://localhost:5000/api';
+
+  // Fetch connections
+  useEffect(() => {
+    fetchConnections();
+  }, [elements]);
+
+  const fetchConnections = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/connections`);
+      setConnections(response.data);
+    } catch (err) {
+      console.error('Failed to fetch connections:', err);
+    }
+  };
+
+  // Filter connections by level
+  const filteredConnections = filterLevel === 'all' 
+    ? connections 
+    : connections.filter(conn => conn.level === filterLevel);
 
   // Функция для получения иконки типа элемента
   const getTypeIcon = (type) => {
@@ -66,6 +90,41 @@ const Topology = ({ elements, onEdit, onDelete, selectedElement }) => {
     }
   };
 
+  // Функция для рисования SVG линий между элементами
+  const renderConnections = () => {
+    return filteredConnections.map((connection, index) => {
+      const fromElement = elements.find(el => el.id === connection.from_element_id);
+      const toElement = elements.find(el => el.id === connection.to_element_id);
+      
+      if (!fromElement || !toElement) return null;
+      
+      const fromIdx = elements.indexOf(fromElement);
+      const toIdx = elements.indexOf(toElement);
+      
+      const fromPos = getElementPosition(fromIdx, elements.length);
+      const toPos = getElementPosition(toIdx, elements.length);
+      
+      const strokeColor = 
+        connection.level === 'L2' ? '#27ae60' :
+        connection.level === 'L3' ? '#3498db' :
+        '#9b59b6'; // L2/L3
+      
+      return (
+        <line
+          key={`connection-${index}`}
+          x1={fromPos.x}
+          y1={fromPos.y}
+          x2={toPos.x}
+          y2={toPos.y}
+          stroke={strokeColor}
+          strokeWidth={2}
+          opacity={0.6}
+          className={`connection-line connection-${connection.level.toLowerCase().replace('/', '-')}`}
+        />
+      );
+    });
+  };
+
   // Обработчик правого клика
   const handleContextMenu = useCallback((e, element) => {
     e.preventDefault();
@@ -96,9 +155,20 @@ const Topology = ({ elements, onEdit, onDelete, selectedElement }) => {
     <div className="topology-container">
       <div className="topology-header">
         <h2>📡 Топология сети</h2>
-        <p className="topology-info">
-          Всего элементов: <strong>{elements.length}</strong>
-        </p>
+        <div className="topology-header-info">
+          <p className="topology-info">
+            Всего элементов: <strong>{elements.length}</strong>
+          </p>
+          <div className="connection-filter">
+            <label>Фильтр связей: 🔗</label>
+            <select value={filterLevel} onChange={(e) => setFilterLevel(e.target.value)}>
+              <option value="all">Все ({connections.length})</option>
+              <option value="L2">L2 ({connections.filter(c => c.level === 'L2').length})</option>
+              <option value="L3">L3 ({connections.filter(c => c.level === 'L3').length})</option>
+              <option value="L2/L3">L2/L3 ({connections.filter(c => c.level === 'L2/L3').length})</option>
+            </select>
+          </div>
+        </div>
       </div>
 
       <div
@@ -106,6 +176,11 @@ const Topology = ({ elements, onEdit, onDelete, selectedElement }) => {
         className="topology-canvas"
         onClick={handleCanvasClick}
       >
+        {/* SVG для линий связей */}
+        <svg className="connections-svg">
+          {renderConnections()}
+        </svg>
+
         {elements.length === 0 ? (
           <div className="topology-empty">
             <div className="empty-icon">📡</div>

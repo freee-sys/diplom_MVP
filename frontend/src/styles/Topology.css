@@ -14,6 +14,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
   background: white;
   padding: 15px 20px;
   border-radius: 8px;
@@ -29,6 +31,13 @@
   gap: 10px;
 }
 
+.topology-header-info {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 .topology-info {
   margin: 0;
   color: #7f8c8d;
@@ -38,6 +47,40 @@
 .topology-info strong {
   color: #3498db;
   font-size: 16px;
+}
+
+/* Фильтр связей */
+.connection-filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.connection-filter label {
+  color: #2c3e50;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.connection-filter select {
+  padding: 6px 10px;
+  border: 1px solid #bdc3c7;
+  border-radius: 4px;
+  background: white;
+  color: #2c3e50;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.connection-filter select:hover {
+  border-color: #3498db;
+}
+
+.connection-filter select:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
 }
 
 /* Холст топологии */
@@ -51,6 +94,38 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   cursor: default;
   min-height: 400px;
+}
+
+/* SVG для линий связей */
+.connections-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.connection-line {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.2s ease, opacity 0.2s ease;
+}
+
+.connection-l2 {
+  stroke: #27ae60;
+  stroke-dasharray: 5, 5;
+}
+
+.connection-l3 {
+  stroke: #3498db;
+  stroke-dasharray: none;
+}
+
+.connection-l2-l3 {
+  stroke: #9b59b6;
+  stroke-dasharray: 10, 5;
 }
 
 /* Пустая топология */
@@ -84,6 +159,8 @@
   cursor: pointer;
   transition: all 0.3s ease;
   user-select: none;
+  position: relative;
+  z-index: 10;
 }
 
 .topology-element:hover {
