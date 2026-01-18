@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+        }
+        .endpoint {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #3498db;
+            border-radius: 4px;
+        }
+        .method {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-weight: bold;
+            margin-right: 10px;
+            color: white;
+        }
+        .get { background-color: #3498db; }
+        .post { background-color: #27ae60; }
+        .put { background-color: #f39c12; }
+        .delete { background-color: #e74c3c; }
+        
+        code {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #ecf0f1;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌐 Virtual Network Element API Documentation</h1>
+        
+        <h2>Base URL</h2>
+        <p><code>http://localhost:5000/api</code></p>
+
+        <h2>Network Elements Endpoints</h2>
+
+        <div class="endpoint">
+            <span class="method get">GET</span><code>/elements</code>
+            <p>Get all virtual network elements</p>
+            <p><strong>Response:</strong></p>
+            <pre>[
+  {
+    "id": "uuid",
+    "name": "Router-1",
+    "type": "Router",
+    "description": "Main router",
+    "interfaces": [],
+    "created_at": "2024-01-18T...",
+    "updated_at": "2024-01-18T..."
+  }
+]</pre>
+        </div>
+
+        <div class="endpoint">
+            <span class="method post">POST</span><code>/elements</code>
+            <p>Create a new network element</p>
+            <p><strong>Request Body:</strong></p>
+            <pre>{
+  "name": "Router-1",
+  "type": "Router",
+  "description": "Main router"
+}</pre>
+        </div>
+
+        <div class="endpoint">
+            <span class="method get">GET</span><code>/elements/{id}</code>
+            <p>Get a specific network element</p>
+        </div>
+
+        <div class="endpoint">
+            <span class="method put">PUT</span><code>/elements/{id}</code>
+            <p>Update a network element</p>
+            <p><strong>Request Body:</strong></p>
+            <pre>{
+  "name": "Router-1-Updated",
+  "type": "Router",
+  "description": "Updated router"
+}</pre>
+        </div>
+
+        <div class="endpoint">
+            <span class="method delete">DELETE</span><code>/elements/{id}</code>
+            <p>Delete a network element (and all its interfaces)</p>
+        </div>
+
+        <h2>Interface Endpoints</h2>
+
+        <div class="endpoint">
+            <span class="method get">GET</span><code>/elements/{element_id}/interfaces</code>
+            <p>Get all interfaces for a network element</p>
+        </div>
+
+        <div class="endpoint">
+            <span class="method post">POST</span><code>/elements/{element_id}/interfaces</code>
+            <p>Add an interface to a network element</p>
+            <p><strong>Request Body:</strong></p>
+            <pre>{
+  "name": "eth0",
+  "type": "Ethernet",
+  "ip_address": "192.168.1.1",
+  "mac_address": "00:1A:2B:3C:4D:5E",
+  "status": "up",
+  "bandwidth": "1Gbps"
+}</pre>
+        </div>
+
+        <div class="endpoint">
+            <span class="method put">PUT</span><code>/elements/{element_id}/interfaces/{interface_id}</code>
+            <p>Update an interface</p>
+        </div>
+
+        <div class="endpoint">
+            <span class="method delete">DELETE</span><code>/elements/{element_id}/interfaces/{interface_id}</code>
+            <p>Delete an interface</p>
+        </div>
+
+        <h2>Quick Reference</h2>
+        <table>
+            <tr>
+                <th>Field</th>
+                <th>Description</th>
+                <th>Example</th>
+            </tr>
+            <tr>
+                <td>name</td>
+                <td>Element or interface name</td>
+                <td>Router-1, eth0</td>
+            </tr>
+            <tr>
+                <td>type</td>
+                <td>Element: Router, Switch, Firewall, Gateway<br>Interface: Ethernet, Gigabit Ethernet, Serial, Loopback</td>
+                <td>Router, Ethernet</td>
+            </tr>
+            <tr>
+                <td>status</td>
+                <td>Interface status</td>
+                <td>up, down, disabled</td>
+            </tr>
+            <tr>
+                <td>ip_address</td>
+                <td>IPv4 address</td>
+                <td>192.168.1.1</td>
+            </tr>
+            <tr>
+                <td>mac_address</td>
+                <td>MAC address</td>
+                <td>00:1A:2B:3C:4D:5E</td>
+            </tr>
+        </table>
+
+        <h2>Health Check</h2>
+        <div class="endpoint">
+            <span class="method get">GET</span><code>/health</code>
+            <p>Check API health status</p>
+            <p><strong>Response:</strong> <code>{"status": "healthy"}</code></p>
+        </div>
+    </div>
+</body>
+</html>

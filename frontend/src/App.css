@@ -1,0 +1,216 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.app-header {
+  background-color: #2c3e50;
+  color: white;
+  padding: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.app-header h1 {
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-header p {
+  color: #ecf0f1;
+  font-size: 0.95rem;
+}
+
+.error-message {
+  background-color: #e74c3c;
+  color: white;
+  padding: 1rem;
+  margin: 0;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Вкладки навигации */
+.app-tabs {
+  display: flex;
+  background-color: white;
+  border-bottom: 2px solid #ecf0f1;
+  padding: 0;
+  gap: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.tab-button {
+  flex: 1;
+  padding: 15px 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  color: #7f8c8d;
+  transition: all 0.3s ease;
+  border-bottom: 3px solid transparent;
+  position: relative;
+}
+
+.tab-button:hover {
+  color: #3498db;
+  background-color: #f8f9fa;
+}
+
+.tab-button.active {
+  color: #3498db;
+  border-bottom-color: #3498db;
+}
+
+.tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background-color: #3498db;
+}
+
+/* Контейнер приложения */
+.app-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Режим Elements: двухколонная раскладка */
+.app-container > .left-panel,
+.app-container > .right-panel {
+  display: block;
+}
+
+/* Режим Topology: полноэкранный */
+.topology-wrapper {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.left-panel {
+  width: 35%;
+  background-color: white;
+  border-right: 1px solid #ecf0f1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.right-panel {
+  width: 65%;
+  background-color: white;
+  overflow-y: auto;
+}
+
+.panel-header {
+  padding: 1.5rem;
+  border-bottom: 2px solid #ecf0f1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panel-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #2c3e50;
+}
+
+.no-selection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #95a5a6;
+  font-size: 1.1rem;
+  text-align: center;
+  padding: 2rem;
+}
+
+.loading {
+  padding: 2rem;
+  text-align: center;
+  color: #7f8c8d;
+}
+
+/* Buttons */
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.btn-primary {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+}
+
+.btn-danger {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #c0392b;
+}
+
+.btn-success {
+  background-color: #27ae60;
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #229954;
+}
+
+.btn-secondary {
+  background-color: #95a5a6;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #7f8c8d;
+}
+
+.btn-small {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 1024px) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  .left-panel {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #ecf0f1;
+    max-height: 40%;
+  }
+
+  .right-panel {
+    width: 100%;
+  }
+}

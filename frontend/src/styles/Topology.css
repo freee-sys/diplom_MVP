@@ -1,0 +1,289 @@
+/* Контейнер топологии */
+.topology-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 15px;
+  padding: 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 8px;
+}
+
+/* Заголовок топологии */
+.topology-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.topology-header h2 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.topology-info {
+  margin: 0;
+  color: #7f8c8d;
+  font-size: 14px;
+}
+
+.topology-info strong {
+  color: #3498db;
+  font-size: 16px;
+}
+
+/* Холст топологии */
+.topology-canvas {
+  flex: 1;
+  position: relative;
+  background: white;
+  border: 2px solid #bdc3c7;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: default;
+  min-height: 400px;
+}
+
+/* Пустая топология */
+.topology-empty {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #95a5a6;
+}
+
+.topology-empty .empty-icon {
+  font-size: 64px;
+  margin-bottom: 15px;
+  opacity: 0.5;
+}
+
+.topology-empty h3 {
+  margin: 10px 0;
+  color: #7f8c8d;
+}
+
+.topology-empty p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+/* Элемент на топологии */
+.topology-element {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.topology-element:hover {
+  transform: scale(1.1);
+}
+
+.topology-element.selected {
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 10px #3498db);
+}
+
+.topology-element.hovered {
+  transform: scale(1.12);
+}
+
+.element-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: 3px solid white;
+  margin-bottom: 10px;
+  transition: all 0.3s ease;
+}
+
+.topology-element:hover .element-circle {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+.topology-element.selected .element-circle {
+  border-color: #f39c12;
+  box-shadow: 0 0 15px rgba(243, 156, 18, 0.6);
+}
+
+.element-icon {
+  font-size: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Информация об элементе */
+.element-info {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px;
+}
+
+.element-name-topology {
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 13px;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.element-type-topology {
+  color: #7f8c8d;
+  font-size: 11px;
+  margin-bottom: 4px;
+  background: #ecf0f1;
+  padding: 2px 6px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.element-interfaces-count {
+  color: #27ae60;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* Легенда */
+.topology-legend {
+  background: white;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.topology-legend h4 {
+  margin: 0 0 10px 0;
+  color: #2c3e50;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.legend-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #7f8c8d;
+  font-size: 13px;
+}
+
+.legend-icon {
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: #f8f9fa;
+  border-radius: 6px;
+}
+
+/* Советы */
+.topology-tips {
+  background: #fff9e6;
+  padding: 12px 15px;
+  border-radius: 8px;
+  border-left: 4px solid #f39c12;
+  font-size: 13px;
+  color: #7f8c8d;
+}
+
+.topology-tips p {
+  margin: 0;
+}
+
+.topology-tips strong {
+  color: #2c3e50;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+  .topology-container {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .topology-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .topology-header h2 {
+    font-size: 18px;
+  }
+
+  .element-circle {
+    width: 60px;
+    height: 60px;
+  }
+
+  .element-icon {
+    font-size: 28px;
+  }
+
+  .element-info {
+    max-width: 80px;
+  }
+
+  .legend-items {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .topology-canvas {
+    min-height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .element-circle {
+    width: 50px;
+    height: 50px;
+  }
+
+  .element-icon {
+    font-size: 24px;
+  }
+
+  .element-info {
+    max-width: 70px;
+  }
+
+  .element-name-topology {
+    font-size: 11px;
+  }
+
+  .topology-header h2 {
+    font-size: 16px;
+  }
+
+  .legend-items {
+    grid-template-columns: 1fr;
+  }
+}

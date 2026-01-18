@@ -1,0 +1,94 @@
+.element-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.element-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.element-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid #ecf0f1;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.element-item:hover {
+  background-color: #f8f9fa;
+}
+
+.element-item.active {
+  background-color: #e8f4f8;
+  border-left: 4px solid #3498db;
+}
+
+.element-content {
+  flex: 1;
+  cursor: pointer;
+}
+
+.element-name {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.3rem;
+  font-size: 1rem;
+}
+
+.element-meta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.85rem;
+  color: #7f8c8d;
+}
+
+.element-type {
+  background-color: #ecf0f1;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  font-weight: 500;
+}
+
+.element-interfaces {
+  color: #95a5a6;
+}
+
+.btn-delete {
+  background: none;
+  border: none;
+  color: #e74c3c;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.btn-delete:hover {
+  color: #c0392b;
+}
+
+.empty-state {
+  padding: 2rem;
+  text-align: center;
+  color: #95a5a6;
+}
+
+.empty-state p {
+  margin: 0.5rem 0;
+}
+
+.empty-state .hint {
+  font-size: 0.9rem;
+  color: #bdc3c7;
+}

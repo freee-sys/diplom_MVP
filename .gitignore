@@ -1,0 +1,8 @@
+frontend/node_modules/
+frontend/build/
+backend/__pycache__/
+backend/.pytest_cache/
+backend/*.pyc
+.env.local
+.DS_Store
+*.log
