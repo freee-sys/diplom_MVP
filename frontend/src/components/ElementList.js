@@ -1,7 +1,7 @@
-import React from 'react';
+﻿import React from 'react';
 import './ElementList.css';
 
-function ElementList({ elements, selectedElement, onSelect, onDelete, onEdit }) {
+function ElementList({ elements, selectedElement, onSelect, onDelete, canWrite = true }) {
   return (
     <div className="element-list">
       {elements.length === 0 ? (
@@ -12,7 +12,7 @@ function ElementList({ elements, selectedElement, onSelect, onDelete, onEdit }) 
       ) : (
         <ul>
           {elements.map(element => (
-            <li 
+            <li
               key={element.id}
               className={`element-item ${selectedElement?.id === element.id ? 'active' : ''}`}
             >
@@ -25,17 +25,7 @@ function ElementList({ elements, selectedElement, onSelect, onDelete, onEdit }) 
                   </span>
                 </div>
               </div>
-              <div className="element-actions">
-                <button
-                  className="btn-edit"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onEdit(element);
-                  }}
-                  title="Edit element and interfaces"
-                >
-                  ✎
-                </button>
+              {canWrite && (
                 <button
                   className="btn-delete"
                   onClick={(e) => {
@@ -44,9 +34,9 @@ function ElementList({ elements, selectedElement, onSelect, onDelete, onEdit }) 
                   }}
                   title="Delete element"
                 >
-                  ✕
+                  Delete
                 </button>
-              </div>
+              )}
             </li>
           ))}
         </ul>

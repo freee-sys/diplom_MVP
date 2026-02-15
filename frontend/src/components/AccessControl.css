@@ -1,0 +1,91 @@
+.access-layout {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  width: 100%;
+  overflow: auto;
+}
+
+.access-panel {
+  flex: 1;
+  min-width: 320px;
+  background: #fff;
+  border: 1px solid #ecf0f1;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.access-form {
+  padding: 16px;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+.access-list {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.access-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #e5e9f0;
+  border-radius: 8px;
+  background: #fafbfc;
+}
+
+.access-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.permission-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 220px;
+  overflow: auto;
+  padding: 8px;
+  border: 1px solid #e5e9f0;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.permission-item {
+  display: grid;
+  grid-template-columns: 18px 160px 1fr;
+  gap: 8px;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.permission-code {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.permission-desc {
+  color: #7f8c8d;
+}
+
+.muted {
+  color: #7f8c8d;
+  font-size: 0.85rem;
+}
+
+.access-wrapper {
+  width: 100%;
+  overflow: auto;
+}
+
+@media (max-width: 1024px) {
+  .access-layout {
+    flex-direction: column;
+  }
+}

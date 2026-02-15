@@ -156,11 +156,15 @@
 
 /* Элемент на топологии */
 .topology-element {
-  cursor: pointer;
+  cursor: grab;
   transition: all 0.3s ease;
   user-select: none;
   position: relative;
   z-index: 10;
+}
+
+.topology-element:active {
+  cursor: grabbing;
 }
 
 .topology-element:hover {

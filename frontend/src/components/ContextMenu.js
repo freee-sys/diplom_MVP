@@ -1,18 +1,16 @@
-import React, { useEffect, useRef } from 'react';
+﻿import React, { useEffect, useRef } from 'react';
 import '../styles/ContextMenu.css';
 
-const ContextMenu = ({ x, y, element, onEdit, onDelete, onClose }) => {
+const ContextMenu = ({ x, y, element, onEdit, onDelete, onClose, canEdit = true, canDelete = true }) => {
   const menuRef = useRef(null);
 
   useEffect(() => {
-    // Закрыть меню при клике вне его
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
         onClose();
       }
     };
 
-    // Закрыть меню при нажатии Escape
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         onClose();
@@ -29,12 +27,14 @@ const ContextMenu = ({ x, y, element, onEdit, onDelete, onClose }) => {
   }, [onClose]);
 
   const handleEdit = () => {
+    if (!canEdit) return;
     onEdit(element);
     onClose();
   };
 
   const handleDelete = () => {
-    if (window.confirm(`Вы уверены, что хотите удалить "${element.name}"?`)) {
+    if (!canDelete) return;
+    if (window.confirm(`Delete "${element.name}"?`)) {
       onDelete(element.id);
       onClose();
     }
@@ -56,14 +56,21 @@ const ContextMenu = ({ x, y, element, onEdit, onDelete, onClose }) => {
         <span className="element-type">{element.type}</span>
       </div>
       <hr className="context-menu-divider" />
-      <button className="context-menu-item edit" onClick={handleEdit}>
-        <span className="icon">✎</span>
-        <span className="label">Редактировать</span>
-      </button>
-      <button className="context-menu-item delete" onClick={handleDelete}>
-        <span className="icon">✕</span>
-        <span className="label">Удалить</span>
-      </button>
+      {canEdit && (
+        <button className="context-menu-item edit" onClick={handleEdit}>
+          <span className="label">Edit</span>
+        </button>
+      )}
+      {canDelete && (
+        <button className="context-menu-item delete" onClick={handleDelete}>
+          <span className="label">Delete</span>
+        </button>
+      )}
+      {!canEdit && !canDelete && (
+        <div className="context-menu-item disabled">
+          <span className="label">No actions available</span>
+        </div>
+      )}
     </div>
   );
 };
